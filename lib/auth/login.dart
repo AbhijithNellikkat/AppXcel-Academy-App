@@ -1,6 +1,11 @@
+import 'package:appxcel_academy/auth/forget_password.dart';
+import 'package:appxcel_academy/auth/signup.dart';
+import 'package:appxcel_academy/pages/home/home_screen.dart';
+import 'package:appxcel_academy/widgets/features/accout_check/account_check_widget.dart';
 import 'package:appxcel_academy/widgets/global/input_field_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -58,26 +63,50 @@ class LoginScreen extends StatelessWidget {
                       ),
                       onTap: () {
                         // Forget password
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgetPasswordScreen(),
+                            ));
                       },
                     )
                   ],
                 ),
                 const SizedBox(height: 20),
                 OutlinedButton(
-                    onPressed: () async{
-                      // try {
-                      //   await _auth
-                      // } catch (e) {
-                        
-                      // }
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 10,
-                      ),
-                      child: Text('Login'),
-                    ))
+                  onPressed: () async {
+                    try {
+                      await _auth.signInWithEmailAndPassword(
+                          email: emailController.text.trim().toLowerCase(),
+                          password: passwordController.text.trim());
+                    } catch (e) {
+                      Fluttertoast.showToast(msg: e.toString());
+                    }
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 10,
+                    ),
+                    child: Text('Login'),
+                  ),
+                ),
+                const SizedBox(height: 50),
+                AccountCheckWidget(
+                  login: true,
+                  press: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpScreen(),
+                        ));
+                  },
+                ),
               ],
             ),
           ),
