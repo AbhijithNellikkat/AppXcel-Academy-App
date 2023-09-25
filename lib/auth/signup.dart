@@ -1,6 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
+import 'package:appxcel_academy/auth/login.dart';
+import 'package:appxcel_academy/pages/home/home_screen.dart';
+import 'package:appxcel_academy/widgets/features/accout_check/account_check_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,6 +23,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   final TextEditingController fullNameController = TextEditingController();
 
   final TextEditingController emailController = TextEditingController();
@@ -23,6 +34,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
 
   File? imageFile;
+
+  String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +131,88 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       lableText: 'Enter Phone Number',
                       icon: Icons.phone,
                       obscureText: false,
-                      textEditingController: passwordController,
+                      textEditingController: phoneNumberController,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 50),
+                    OutlinedButton(
+                      onPressed: () async {
+                        if (imageFile == null) {
+                          Fluttertoast.showToast(msg: "Please select an Image");
+                          return;
+                        }
+                        try {
+                          // ======================================
+
+                          final ref = FirebaseStorage.instance
+                              .ref()
+                              .child('user Images')
+                              .child('${DateTime.now()}.jpg');
+
+                          await ref.putFile(imageFile!);
+                          imageUrl = await ref.getDownloadURL();
+
+                          // ======================================
+
+                          await auth.createUserWithEmailAndPassword(
+                              email: emailController.text.trim().toLowerCase(),
+                              password: passwordController.text.trim());
+
+                          final User? user = auth.currentUser;
+                          final uid = user!.uid;
+
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(uid)
+                              .set(
+                            {
+                              'id': uid,
+                              'name': fullNameController.text,
+                              'email': emailController.text,
+                              'phoneNumber': phoneNumberController.text,
+                              'userImage': imageUrl,
+                              'createAt': Timestamp.now(),
+                            },
+                          );
+
+                          Navigator.canPop(context)
+                              ? Navigator.pop(context)
+                              : null;
+
+                          fullNameController.clear();
+                          emailController.clear();
+                          passwordController.clear();
+                          phoneNumberController.clear();
+
+                          // ======================================
+                        } catch (e) {
+                          Fluttertoast.showToast(msg: "$e");
+                        }
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomeScreen(),
+                            ));
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 40,
+                          vertical: 10,
+                        ),
+                        child: Text('Create Account'),
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    AccountCheckWidget(
+                      login: false,
+                      press: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ));
+                      },
+                    )
                   ],
                 ),
               ],

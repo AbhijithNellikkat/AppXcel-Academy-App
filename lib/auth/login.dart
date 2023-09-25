@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:appxcel_academy/auth/forget_password.dart';
 import 'package:appxcel_academy/auth/signup.dart';
 import 'package:appxcel_academy/pages/home/home_screen.dart';
@@ -66,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ForgetPasswordScreen(),
+                              builder: (context) => const ForgetPasswordScreen(),
                             ));
                       },
                     )
@@ -85,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+                          builder: (context) => const HomeScreen(),
                         ));
                   },
                   child: const Padding(
