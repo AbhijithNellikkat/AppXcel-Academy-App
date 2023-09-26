@@ -3,11 +3,13 @@
 import 'package:appxcel_academy/auth/forget_password.dart';
 import 'package:appxcel_academy/auth/signup.dart';
 import 'package:appxcel_academy/pages/home/home_screen.dart';
+import 'package:appxcel_academy/utils/assets.dart';
 import 'package:appxcel_academy/widgets/features/accout_check/account_check_widget.dart';
 import 'package:appxcel_academy/widgets/global/input_field_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -32,9 +34,7 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 ),
                 const SizedBox(height: 20),
-                const CircleAvatar(
-                  radius: 60,
-                ),
+                Lottie.asset(loginPageAnimation),
                 Column(
                   children: [
                     InputFieldWidget(

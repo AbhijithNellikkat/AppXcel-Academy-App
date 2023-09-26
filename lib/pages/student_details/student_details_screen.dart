@@ -71,6 +71,17 @@ class StudentDetailsScreen extends StatelessWidget {
                           },
                           child: const Text("Delete"))
                       : Container(),
+                  // FirebaseAuth.instance.currentUser!.uid == userId
+                  //     ? OutlinedButton(
+                  //         onPressed: () {
+                  //           Navigator.pushReplacement(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => UpdateStudentScreen(),
+                  //               ));
+                  //         },
+                  //         child: const Text("Update"))
+                  //     : Container(),
                 ],
               )
             ]),

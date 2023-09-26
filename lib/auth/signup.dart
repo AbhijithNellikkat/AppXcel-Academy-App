@@ -7,13 +7,14 @@ import 'package:appxcel_academy/pages/home/home_screen.dart';
 import 'package:appxcel_academy/widgets/features/accout_check/account_check_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../utils/images.dart';
+import '../utils/assets.dart';
 import '../widgets/global/input_field_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -160,7 +161,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                           final User? user = auth.currentUser;
                           final uid = user!.uid;
-
+                           final String? token = await FirebaseMessaging.instance.getToken();
+                           
                           FirebaseFirestore.instance
                               .collection("users")
                               .doc(uid)
@@ -172,6 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               'phoneNumber': phoneNumberController.text,
                               'userImage': imageUrl,
                               'createAt': Timestamp.now(),
+                              'token':token,
                             },
                           );
 

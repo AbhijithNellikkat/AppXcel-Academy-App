@@ -1,4 +1,4 @@
-import 'package:appxcel_academy/pages/student_details/student_details.dart';
+import 'package:appxcel_academy/pages/student_details/student_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

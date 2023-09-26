@@ -1,6 +1,6 @@
 import 'package:appxcel_academy/auth/login.dart';
 import 'package:appxcel_academy/auth/signup.dart';
-import 'package:appxcel_academy/utils/images.dart';
+import 'package:appxcel_academy/utils/assets.dart';
 import 'package:appxcel_academy/widgets/features/accout_check/account_check_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
