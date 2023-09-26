@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Column(
                   children: [
                     InputFieldWidget(
-                      lableText: 'Enter Username',
+                      lableText: 'Enter teacher name',
                       icon: Icons.person,
                       obscureText: false,
                       textEditingController: fullNameController,
