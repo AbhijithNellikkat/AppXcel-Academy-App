@@ -1,8 +1,10 @@
 import 'package:appxcel_academy/pages/add_student/add_student_screen.dart';
-import 'package:appxcel_academy/widgets/features/listView/listView_widget.dart';
+import 'package:appxcel_academy/widgets/features/students_listView/students_listView_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets/features/empty_box/empty_box_view.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -41,7 +43,6 @@ class HomeScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.connectionState == ConnectionState.active) {
-            
             if (snapshot.data.docs != null && snapshot.data.docs.isNotEmpty) {
               return ListView.builder(
                 itemCount: snapshot.data.docs.length,
@@ -53,6 +54,12 @@ class HomeScreen extends StatelessWidget {
                     name: snapshot.data.docs[index]['username'],
                     date: snapshot.data.docs[index]['createAt'].toDate(),
                     userId: snapshot.data.docs[index]['id'],
+                    studentName: snapshot.data.docs[index]['studentName'],
+                    studentAge: snapshot.data.docs[index]['studentAge'],
+                    studentPhoneNumber:  snapshot.data.docs[index]['studentPhoneNumber'],
+                    studentEmailId:  snapshot.data.docs[index]['studentEmailId'],
+                    studentPlace:  snapshot.data.docs[index]['studentPlace'],
+                    studentImage: snapshot.data.docs[index]['studentImage'],
                   );
                 },
               );
@@ -61,13 +68,11 @@ class HomeScreen extends StatelessWidget {
             return const Center(child: Text('There is no tasks'));
           }
 
-          return const Center(
-              child: Text('Something went wrong',
-                  style: TextStyle(fontWeight: FontWeight.bold)));
+          return const Center(child: EmptyBoxView());
         },
       ),
       appBar: AppBar(
-        title: Text("Home"),
+        title: const Text("Home"),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -77,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                 builder: (context) => AddStudentScreen(),
               ));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

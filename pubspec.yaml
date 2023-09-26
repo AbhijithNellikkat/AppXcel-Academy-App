@@ -46,6 +46,7 @@ dependencies:
   intl: ^0.18.1
   lottie: ^2.6.0
   provider: ^6.0.5
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/images/notUser.jpg
     - assets/animations/forget_password_animation.json
+    - assets/animations/emptyBox.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
