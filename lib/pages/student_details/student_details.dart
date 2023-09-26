@@ -1,3 +1,6 @@
+import 'package:appxcel_academy/pages/home/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StudentDetailsScreen extends StatelessWidget {
@@ -8,7 +11,9 @@ class StudentDetailsScreen extends StatelessWidget {
       required this.studentPhoneNumber,
       required this.studentEmailId,
       required this.studentPlace,
-      required this.studentImage});
+      required this.studentImage,
+      required this.userId,
+      required this.doId});
 
   final String studentName;
   final String studentAge;
@@ -16,6 +21,8 @@ class StudentDetailsScreen extends StatelessWidget {
   final String studentEmailId;
   final String studentPlace;
   final String studentImage;
+  final String userId;
+  final String doId;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +53,24 @@ class StudentDetailsScreen extends StatelessWidget {
                   Text('Student Email : $studentEmailId'),
                   const SizedBox(height: 10),
                   Text('Student Place: $studentPlace'),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 50),
+                  FirebaseAuth.instance.currentUser!.uid == userId
+                      ? OutlinedButton(
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection("studetDetails")
+                                .doc(doId)
+                                .delete()
+                                .then((value) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(),
+                                  ));
+                            });
+                          },
+                          child: const Text("Delete"))
+                      : Container(),
                 ],
               )
             ]),

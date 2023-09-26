@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../utils/images.dart';
 import '../widgets/global/input_field_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -100,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: CircleAvatar(
                     radius: 70,
                     backgroundImage: imageFile == null
-                        ? const AssetImage("assets/images/notUser.jpg")
+                        ? const AssetImage(notUserImage)
                         : Image.file(imageFile!).image,
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:appxcel_academy/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -10,7 +11,7 @@ class EmptyBoxView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Lottie.asset("assets/animations/emptyBox.json"),
+        Lottie.asset(emptyBoxAnimation),
         Text(
           "Things look empty here. Tap + to start ",
           style: GoogleFonts.poppins(fontSize: 13),

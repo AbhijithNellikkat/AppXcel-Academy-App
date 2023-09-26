@@ -47,6 +47,8 @@ class ListViewWidget extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => StudentDetailsScreen(
+                        doId: doId,
+                        userId: userId,
                         studentName: studentName,
                         studentAge: studentAge,
                         studentPhoneNumber: studentPhoneNumber,
@@ -63,6 +65,7 @@ class ListViewWidget extends StatelessWidget {
             ),
             const SizedBox(height: 13.0),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),

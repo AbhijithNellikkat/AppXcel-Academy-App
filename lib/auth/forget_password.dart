@@ -1,5 +1,6 @@
 import 'package:appxcel_academy/auth/login.dart';
 import 'package:appxcel_academy/auth/signup.dart';
+import 'package:appxcel_academy/utils/images.dart';
 import 'package:appxcel_academy/widgets/features/accout_check/account_check_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                   ),
                   Lottie.asset(
-                      'assets/animations/forget_password_animation.json'),
+                      forgetPasswordAnimation),
                   const SizedBox(height: 20),
                   InputFieldWidget(
                     lableText: 'Email',
