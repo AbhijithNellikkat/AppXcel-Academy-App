@@ -1,30 +1,25 @@
-// class Student {
-//   final String doId;
-//   final String img;
-//   final String userImg;
-//   final String name;
-//   final DateTime date;
-//   final String userId;
-//   final String studentName;
-//   final String studentAge;
-//   final String studentPhoneNumber;
-//   final String studentEmailId;
-//   final String studentPlace;
-//   final String studentImage;
+class Student {
+  final String userImg;
+  final String userName;
+  final String createAt;
+  final String userId;
+  final String studentName;
+  final String studentAge;
+  final String studentPhoneNumber;
+  final String studentEmailId;
+  final String studentPlace;
+  final String studentImage;
 
-//   Student({
-//     required this.doId,
-//     required this.userImg,
-//     required this.name,
-//     required this.date,
-//     required this.userId,
-//     required this.studentPhoneNumber,
-//     required this.studentEmailId,
-//     required this.studentPlace,
-//     required this.studentImage,
-//     required this.img,
-//     required this.studentName,
-//     required this.studentAge,
-//     // Initialize other student details
-//   });
-// }
+  Student({
+    required this.userImg,
+    required this.userName,
+    required this.createAt,
+    required this.userId,
+    required this.studentPhoneNumber,
+    required this.studentEmailId,
+    required this.studentPlace,
+    required this.studentImage,
+    required this.studentName,
+    required this.studentAge,
+  });
+}

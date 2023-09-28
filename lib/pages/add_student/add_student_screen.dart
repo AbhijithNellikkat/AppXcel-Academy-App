@@ -81,6 +81,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     void showImageDialog() {
       showDialog(
         context: context,

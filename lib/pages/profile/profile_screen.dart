@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fStorsge;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,6 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userImage = '';
   String? userNameInput = '';
   File? imageXFile;
+  String? userImageUrl;
 
   final user = FirebaseAuth.instance.currentUser;
 
@@ -48,6 +50,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     getDataFormDatabase();
+  }
+
+  void updateImageFirebase() async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    fStorsge.Reference reference = fStorsge.FirebaseStorage.instance
+        .ref()
+        .child('userImage')
+        .child(fileName);
+
+    fStorsge.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
+    fStorsge.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+
+    await taskSnapshot.ref.getDownloadURL().then((url) async {
+      userImageUrl = url;
+    });
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      "userImage": userImageUrl,
+    });
   }
 
   @override
@@ -224,6 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (croppedImage != null) {
       setState(() {
         imageXFile = File(croppedImage.path);
+        updateImageFirebase();
       });
     }
   }
