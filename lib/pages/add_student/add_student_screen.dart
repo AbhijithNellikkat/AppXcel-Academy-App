@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -28,7 +31,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController placeController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
 
   File? imageFile;
 
@@ -37,10 +40,43 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   String? userImage;
   String? username;
 
+  late Position currentPosition;
+  String currentAddress = "My Address";
+
   @override
   void initState() {
     super.initState();
     readUserInfo();
+  }
+
+// ============================================================== //
+  void getCurrentPosition() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      Fluttertoast.showToast(
+          msg:
+              "Permission for accessing location is denied,Please go to settings and turn on");
+      Geolocator.requestPermission();
+    } else {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            position.latitude, position.longitude);
+        Placemark place = placemarks[0];
+        setState(() {
+          currentPosition = position;
+          currentAddress =
+              "${place.locality},${place.postalCode},${place.country}";
+          locationController.text = currentAddress;
+          log(currentAddress);
+        });
+      } catch (e) {
+        Fluttertoast.showToast(msg: e.toString());
+      }
+    }
   }
 
   @override
@@ -144,8 +180,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       lableText: 'Enter student place',
                       icon: Icons.location_on_outlined,
                       obscureText: false,
-                      textEditingController: placeController,
+                      textEditingController: locationController,
                     ),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                        onPressed: () {
+                          getCurrentPosition();
+                        },
+                        child: const Icon(Icons.location_on)),
                     const SizedBox(height: 30),
                     OutlinedButton(
                       onPressed: () {
@@ -197,7 +239,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
           'studentAge': ageController.text,
           'studentPhoneNumber': phoneNumberController.text,
           'studentEmailId': emailController.text,
-          'studentPlace': placeController.text,
+          'studentPlace': locationController.text,
           'createAt': DateTime.now(),
         },
       );
